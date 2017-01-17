@@ -10,7 +10,7 @@ elsif ($type eq "married")
      { $tax = married_fwh($exception, $salary); }
 else { die "Something went wrong ggwp gl bro\n" }
 print "Federal Witholding Amount: $tax\n";
-
+# SUBS ############################
 sub single_fwh { # ARGV1 EXCEPTION  ARGV2 GROSS
     my $xcept = shift @_; $xcept+=2;
     my $gross = shift @_;
@@ -30,7 +30,6 @@ sub single_fwh { # ARGV1 EXCEPTION  ARGV2 GROSS
         else { $i++; next; }
     }
 }
-
 sub married_fwh { # ARGV1 EXCEPTION  ARGV2 GROSS
     my $Married_table = "MarriedFWH.txt";
     open(my $mfp, '<', $Married_table) or die "can't open MarriedFWH.txt";
@@ -41,7 +40,6 @@ sub married_fwh { # ARGV1 EXCEPTION  ARGV2 GROSS
             { $item =~ s/,//; }
         push @Married, [ @tmp ];
     }
-
     my $xcept = shift @_; $xcept+=2;
     my $gross = shift @_;
     my $i = 0;
