@@ -9,7 +9,7 @@ if ($type eq "single")
 elsif ($type eq "married")
      { $tax = married_fwh($exception, $salary); }
 else { die "Something went wrong ggwp gl bro\n" }
-print "$tax\n";
+print "Federal Witholding Amount: $tax\n";
 
 sub single_fwh { # ARGV1 EXCEPTION  ARGV2 GROSS
     my $xcept = shift @_; $xcept+=2;
