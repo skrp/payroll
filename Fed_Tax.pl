@@ -48,8 +48,8 @@ sub single_swh { # ARGV1 EXCEPTION  ARGV2 GROSS
     }
     my $i = 0;
     foreach (@State) {
-        if (($salary > $Single[$i][0]) and ($salary < $Single[$i][1]))
-            { return $Single[$i][$xcept]; }
+        if (($salary > $State[$i][0]) and ($salary < $State[$i][1]))
+            { return $State[$i][$xcept]; }
         else { $i++; next; }
     }
 }
