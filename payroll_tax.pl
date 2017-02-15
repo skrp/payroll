@@ -4,12 +4,12 @@ use strict; use warnings;
 #                 ---skrp of MKRX
 my ($type, $exception, $salary) = @ARGV;
 my $f_tax; my $s_tax;
-if ($type eq "single") { 
+if ($type eq "single") {
      $f_tax = single_fwh($exception, $salary);
-     $s_tax = single_swh($exception, $salary); 
+     $s_tax = single_swh($exception, $salary);
 }
-elsif ($type eq "married") { 
-     $f_tax = married_fwh($exception, $salary); 
+elsif ($type eq "married") {
+     $f_tax = married_fwh($exception, $salary);
      $s_tax = married_swh($exception, $salary);
 }
 else { die "Something went wrong ggwp gl bro\n" }
@@ -20,12 +20,12 @@ sub single_fwh { # ARGV1 EXCEPTION  ARGV2 GROSS
     my $gross = shift @_;
     my $Fed_table = "SingleFWH.txt";
     open(my $ffp, '<', $Fed_table) or die "can't open SingleFWH.txt";
-    my @Fed;
-    while (my $line = readline $sfp) {
+    my @Single;
+    while (my $line = readline $ffp) {
         my @tmp = split ' ', $line;
         foreach my $item (@tmp)
             { $item =~ s/,//; }
-        push @Fed, [ @tmp ];
+        push @Single, [ @tmp ];
     }
     my $i = 0;
     foreach (@Single) {
@@ -72,7 +72,7 @@ sub married_fwh { # ARGV1 EXCEPTION  ARGV2 GROSS
         else { $i++; next; }
     }
 }
-sub married_fwh { # ARGV1 EXCEPTION  ARGV2 GROSS
+sub married_swh { # ARGV1 EXCEPTION  ARGV2 GROSS
     my $xcept = shift @_; $xcept+=2; # adjust $xcept for table format
     my $gross = shift @_;
     my $State_table = "MarriedSWH.txt";
