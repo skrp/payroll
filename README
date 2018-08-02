@@ -1,8 +1,8 @@
 #####################################
 # HOWTO - run all payroll methods
 
-To initialize this process the first time follow steps below labeled:
-
+Input is a payroll spreadsheet & employee time spreadsheet.
+Output: tax calculations, journal entries, encrypted paystubs automatically emailed to employee
 
 # Table of Items ####################
 
