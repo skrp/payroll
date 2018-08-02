@@ -1,0 +1,202 @@
+#####################################
+# HOWTO - run all payroll methods
+
+To initialize this process the first time follow steps below labeled:
+	# INITIALIZATION ####################
+
+# Table of Items ####################
+
+# FOLDERS ###########################
+ITEMS\
+	journals\	journal folder for manual-entry into quickbooks
+	tax\		tax calculations folder for manual-entry into payroll-spreadsheet
+PDF\
+	PRE\		unencrypted attachments
+	ATT\		encrytped attachments
+TABLES\
+	LIST.txt        per-payroll list of sender & payroll-stub recipients
+	MASTER.txt      master list to keep groups of recipients (for info only)
+	VAR.txt         Annual limits which may change each year
+	MarriedFwH.txt  Federal witholding tables for Married individuals
+	SingleFWH.txt   Federal witholding tables for Single individuals
+	MarriedFwH.txt  State whitholding tables for Married individuals
+	SingleFWH.txt   State whitholding tables for Single individuals
+
+# FILES #############################
+0_HOWTO.txt		Read this as a help file
+1_payroll.xlsx		Spreadsheet of employee time 
+2_payroll_stubs.xlsm	Main payroll spreadsheet
+3_TAX.pl		Program to calculate tax
+4_GJE.pl            	Program to output journal-entry
+5_ATT.pl    	 	Program to encrypt pdfs
+6_EM.pl       	 	Program to email pdfs
+
+#####################################
+# STEP ONE ##########################
+
+payroll.xlsx 
+	DETAIL 		sheet of detailed hours for employee
+	SUMMARY		summary of hours for employee
+	REVIEW		review of hours for payroll
+
+Add hours from the Time-Clock program into DETAIL sheet
+
+#####################################
+# STEP TWO ##########################
+
+Step 1) DETAIL sheet (STEP ONE) will auto-populate SUMMARY sheet
+  For every employee with hours in boxes:
+  	Copy box & paste in 2_payroll_stubs.xlsm employee sheet
+Step 2) Print REVIEW tab
+  Use columns: regular OT PTO
+  Fill data onto each employee sheet of 2_payroll_stubs.xlsm
+	regular => Hours
+	OT =>  OT
+	PTO => PTO
+Step 3) Verify employee stubs data to box on same sheet pasted from SUMMARY
+
+#####################################
+# STEP THREE ########################
+
+Step 1) Find the row of the payroll in 2_payroll_stubs.xlsm 
+
+Step 2) In payroll folder hold Shift & right-click. 
+  This will open a drop-down menu select: 'Open command window here'
+
+Step 3) enter the command below followed by a space & the row
+perl 3_TAX.pl
+
+example:
+  perl 3_TAX.pl 6
+     [this will give you the tax calc for the first payroll] 
+
+Step 4) After a few minutes check the ITEMS\tax\ folder
+  When the program finishes it will create a .txt file
+
+example:
+ 6-Jan.txt
+
+step 5) Manually enter the data found in the file into 2_payroll_stubs.xlsm
+
+#####################################
+# STEP FOUR  ########################
+
+Step 1) Find the row of the payroll in 2_payroll_stubs.xlsm 
+
+Step 2) In payroll folder hold Shift & right-click. 
+  This will open a drop-down menu select: 'Open command window here'
+
+Step 3) enter the command below followed by a space & the row
+perl 4_GJE.pl
+
+example:
+  perl 3_GJE.pl 6
+     [this will give you the journal-entry for the first payroll] 
+
+Step 4) After a few minutes check the ITEMS\journals\ folder
+  When the program finishes it will create a .txt file
+example:
+ 6-Jan.txt
+
+Step 5) Log into Quickbooks
+Under the 'Company' tab click 'Make General Journal Entries...'
+This will open a new window
+
+Step 6) In the top left, under 'MAIN' is a back-arrow
+Hit the back-arrow until a similar payroll entry is found
+
+Right-click mouse on the entry
+From the drop-down-menu select 'Duplicate General Journal'
+
+Use .txt file to fill in the data
+
+#####################################
+# STEP FIVE #########################
+
+Open 2018_Stubs.xlsm
+Using (Ctrl or Shift) key select all tabs in the payroll
+
+Hold down Alt key and hit the F11 key
+This will open a window that holds code
+Hit the F5 key to run the code & hit enter (Run)
+
+#####################################
+# STEP 6 ############################
+The TABLES\MASTER.txt file holds all the employee data necessar for all payrolls:
+   Each line is an employee, each data-point is seperated by a space
+   email_adress pdf_file SSN_passkey
+
+Copy all employee data relevant to the payroll
+Paste data into LIST.txt
+	[paste after the first line which should contain sender's email-address & gmail password]
+	LIST.txt should only contain entries in the current payroll
+
+Step 1) In payroll folder hold Shift & right-click. 
+  This will open a drop-down menu select: 'Open command window here'
+
+Step 3) enter the command below
+perl 5_ATT.pl
+
+Step 4) enter the next command below
+perl 6_EM.pl
+ Hit enter & it will prompt for payroll name
+ Type payroll name & hit enter
+ It will then send all the emails
+
+#####################################
+# INITIALIZATION ####################
+
+# VAR.txt #####################
+Research the limits for year, these may change each year
+
+VAR.txt contains annual payroll variables, each number on its own line (no spaces)
+  year
+  max 401k contribion
+  max 401k catchup contribution
+  HSA limit for single
+  HSA limit for married
+  HSA catchup limit
+  Additional-Med-Tax single
+  Additional-Med-Tax married
+  Additional-Med-Tax rate
+  Social Security Tax limit
+
+# LIST.txt #######################
+first line is the sender's email & password [seperated by one space]
+(gmail password must not have spaces)
+example:
+  payroll_person@gmail.com myP@5s876R9a
+
+next line & onwards till end are recipients
+recipient@email attachment_name PIN_to_OPEN_PDF [each entry is seperated by one space] 
+example:
+  bill_the_kid@ymail Bil.pdf 4739289
+
+# MASTER.txt #################
+LIST.txt must be remade each payroll that there is a change is who is paid
+MASTER.txt is only a repository to keep the line-items neat & simple
+Copy the group from MASTER.txt & paste it into LIST.txt
+
+# SET-UP SENDER GMAIL ###############
+(gmail password must not have spaces)
+The sender should set up a google account & change this setting
+1) Log In
+2) Paste website & approve it 
+   https://www.google.com/settings/security/lesssecureapps
+
+# PERL MODS #########################
+Download & install strawberryperl
+1) http://strawberryperl.com/download/5.26.2.1/strawberry-perl-5.26.2.1-64bit.msi
+Or find a download on the website http://strawberryperl.com/download/
+
+Open an administrator command-prompt 
+Issue the following commands 
+   (copy line, paste it in command-prompt, hit enter)
+Each with fetch files & install necessary programs to run the code
+
+cpan Spreadsheet::ParseXLSX
+cpan CAM::PDF
+cpan Email::Sender::Transport::SMTP::TLS
+cpan Email::Stuffer
+
+
