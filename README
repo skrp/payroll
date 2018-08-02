@@ -2,7 +2,7 @@
 # HOWTO - run all payroll methods
 
 To initialize this process the first time follow steps below labeled:
-	# INITIALIZATION ####################
+
 
 # Table of Items ####################
 
@@ -23,8 +23,7 @@ TABLES\
 	SingleFWH.txt   State whitholding tables for Single individuals
 
 # FILES #############################
-0_HOWTO.txt		Read this as a help file
-1_payroll.xlsx		Spreadsheet of employee time 
+1_payroll.xlsx		Spreadsheet of employee time
 2_payroll_stubs.xlsm	Main payroll spreadsheet
 3_TAX.pl		Program to calculate tax
 4_GJE.pl            	Program to output journal-entry
